@@ -1,4 +1,4 @@
-# crypto_market
+# Coin_Watch
 
 A new Flutter project.
 
