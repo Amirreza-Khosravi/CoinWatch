@@ -40,9 +40,15 @@ class _CoinListScreenState extends State<CoinListScreen> {
             return state.cryptolist.fold((l) {
               return Text(l);
             }, (cryptoList) {
-              return GetBody(cryptoList);
+              return RefreshIndicator(
+                  onRefresh: () async {
+                    BlocProvider.of<CryptoListBloc>(context)
+                        .add(GetCryptoListEvent());
+                  },
+                  child: GetBody(cryptoList));
             });
           }
+
           return const Text('error');
         },
       ),
@@ -104,8 +110,11 @@ class GetBody extends StatelessWidget {
                       style: const TextStyle(color: greyColor, fontSize: 16),
                     ),
                     Text(
-                      cryptoList[index].changePercent24hr.toStringAsFixed(2),
-                      style: const TextStyle(color: greyColor, fontSize: 16),
+                      '${cryptoList[index].changePercent24hr.toStringAsFixed(2)} %',
+                      style: TextStyle(
+                          color: getColorChangPercent(
+                              cryptoList[index].changePercent24hr),
+                          fontSize: 16),
                     ),
                   ],
                 ),
@@ -130,4 +139,8 @@ Widget getIconChangePercent(double changePercent) {
           Icons.trending_up,
           color: greenColor,
         );
+}
+
+Color getColorChangPercent(double changePercent) {
+  return changePercent <= 0 ? redColor : greenColor;
 }
