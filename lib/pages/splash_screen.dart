@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:coin_watch/bloc/cryptolist_bloc.dart';
 import 'package:coin_watch/pages/coin_list_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -10,8 +12,13 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Timer(const Duration(seconds: 5), () {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const CoinListScreen()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => BlocProvider(
+                    create: (context) => CryptoListBloc(),
+                    child: const CoinListScreen(),
+                  )));
     });
     return Scaffold(
       body: SafeArea(

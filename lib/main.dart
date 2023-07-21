@@ -1,7 +1,9 @@
+import 'package:coin_watch/di/di.dart';
 import 'package:coin_watch/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  await getItInit();
   runApp(const MyApp());
 }
 
