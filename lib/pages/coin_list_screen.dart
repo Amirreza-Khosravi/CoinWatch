@@ -16,8 +16,8 @@ class CoinListScreen extends StatefulWidget {
 class _CoinListScreenState extends State<CoinListScreen> {
   @override
   void initState() {
-    BlocProvider.of<CryptoListBloc>(context).add(GetCryptoListEvent());
     super.initState();
+    BlocProvider.of<CryptoListBloc>(context).add(GetCryptoListEvent());
   }
 
   @override
@@ -40,12 +40,7 @@ class _CoinListScreenState extends State<CoinListScreen> {
             return state.cryptolist.fold((l) {
               return Text(l);
             }, (cryptoList) {
-              return RefreshIndicator(
-                  onRefresh: () async {
-                    BlocProvider.of<CryptoListBloc>(context)
-                        .add(GetCryptoListEvent());
-                  },
-                  child: GetBody(cryptoList));
+              return GetBody(cryptoList);
             });
           }
 
@@ -65,66 +60,71 @@ class GetBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: cryptoList.length,
-      itemBuilder: ((context, index) {
-        return ListTile(
-          title: Text(
-            cryptoList[index].name,
-            style: const TextStyle(color: greenColor),
-          ),
-          subtitle: Text(
-            cryptoList[index].symbol,
-            style: const TextStyle(color: greyColor),
-          ),
-          leading: SizedBox(
-            width: 70,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  cryptoList[index].rank.toString(),
-                  style: const TextStyle(
-                      color: greyColor,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(width: 15),
-                SizedBox(
-                    height: 30,
-                    width: 30,
-                    child: Image.asset('assets/images/coin.png'))
-              ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        BlocProvider.of<CryptoListBloc>(context).add(GetCryptoListEvent());
+      },
+      child: ListView.builder(
+        itemCount: cryptoList.length,
+        itemBuilder: ((context, index) {
+          return ListTile(
+            title: Text(
+              cryptoList[index].name,
+              style: const TextStyle(color: greenColor),
             ),
-          ),
-          trailing: SizedBox(
-            width: 150,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '\$ ${cryptoList[index].priceUsd.toStringAsFixed(2)}',
-                      style: const TextStyle(color: greyColor, fontSize: 16),
-                    ),
-                    Text(
-                      '${cryptoList[index].changePercent24hr.toStringAsFixed(2)} %',
-                      style: TextStyle(
-                          color: getColorChangPercent(
-                              cryptoList[index].changePercent24hr),
-                          fontSize: 16),
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 20),
-                getIconChangePercent(cryptoList[index].changePercent24hr)
-              ],
+            subtitle: Text(
+              cryptoList[index].symbol,
+              style: const TextStyle(color: greyColor),
             ),
-          ),
-        );
-      }),
+            leading: SizedBox(
+              width: 80,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    cryptoList[index].rank.toString(),
+                    style: const TextStyle(
+                        color: greyColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(width: 15),
+                  SizedBox(
+                      height: 30,
+                      width: 30,
+                      child: Image.asset('assets/images/coin.png'))
+                ],
+              ),
+            ),
+            trailing: SizedBox(
+              width: 150,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '\$ ${cryptoList[index].priceUsd.toStringAsFixed(2)}',
+                        style: const TextStyle(color: greyColor, fontSize: 16),
+                      ),
+                      Text(
+                        '${cryptoList[index].changePercent24hr.toStringAsFixed(2)} %',
+                        style: TextStyle(
+                            color: getColorChangPercent(
+                                cryptoList[index].changePercent24hr),
+                            fontSize: 16),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 20),
+                  getIconChangePercent(cryptoList[index].changePercent24hr)
+                ],
+              ),
+            ),
+          );
+        }),
+      ),
     );
   }
 }
