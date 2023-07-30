@@ -14,3 +14,5 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+![coinWatch](https://github.com/Amirreza-Khosravi/CoinWatch/assets/100726687/1330f8c6-4e16-4337-b6ca-a4fb43ff16c0)
